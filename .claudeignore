@@ -1,0 +1,11 @@
+node_modules/
+.next/
+dist/
+build/
+public/models/*.glb
+public/models/*.gltf
+public/textures/
+*.png
+*.jpg
+*.hdr
+*.log
