@@ -3,6 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber'
 import { AdditiveBlending, BufferAttribute, BufferGeometry, Vector2, Vector3 } from 'three'
 import { scrollState } from '../../store/scroll'
 import { PHONE } from '../../store/device'
+import { HOLE_RISE } from './holeLayout'
 import { buildStars } from './shapes'
 
 const HOLE = new Vector3()
@@ -113,7 +114,7 @@ export default function StarField() {
     const sst = (a, b, v) => { const t = Math.min(Math.max((v - a) / (b - a), 0), 1); return t * t * (3 - 2 * t) }
     shared.uPull.value = fin > 0 ? sst(0.08, 0.62, fin) : 0
     if (fin > 0) {
-      HOLE.set(0, 0.15 + 1.9 * sst(0.72, 0.95, fin), -5).project(camera)
+      HOLE.set(0, 0.15 + HOLE_RISE * sst(0.72, 0.95, fin), -5).project(camera)
       shared.uHole.value.set(HOLE.x, HOLE.y)
       shared.uAspect.value = size.width / size.height
     }

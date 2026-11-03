@@ -28,7 +28,14 @@ export default function IoBubble() {
       if (el) {
         const W = window.innerWidth, H = window.innerHeight
         if (W < 768 || H < 500) { // phones (also turned sideways): a strip above the timeline
-          el.style.transform = `translate3d(12px, ${(H - 92 - el.offsetHeight).toFixed(1)}px, 0)`
+          if (W < 768 && scrollState.fin > 0.9) {
+            // the very end on a phone: a small bubble stuck right under IO
+            const io = scrollState.ioPos || scrollState.io
+            const x = ((1 + io.x) / 2) * W, y = ((1 - io.y) / 2) * H
+            const r = scrollState.io.r || 40
+            const left = Math.min(Math.max(x - el.offsetWidth / 2, 8), W - el.offsetWidth - 8)
+            el.style.transform = `translate3d(${left.toFixed(1)}px, ${(y + r * 0.8).toFixed(1)}px, 0)`
+          } else el.style.transform = `translate3d(12px, ${(H - 92 - el.offsetHeight).toFixed(1)}px, 0)`
           raf = requestAnimationFrame(loop)
           return
         }
@@ -114,7 +121,7 @@ export default function IoBubble() {
         staying = 0
       }
       if (sec === cand) {
-        if (sec !== last && sec > 0 && IO.hints[sec] && now - since > 450 && scrollState.vel < 0.6) {
+        if (sec !== last && sec > 0 && IO.hints[sec] && now - since > 450 && scrollState.vel < 0.6 && scrollState.fin < 0.05) {
           last = sec
           const stay = !!IO.stay?.includes(sec)
           if (stay) staying = sec
