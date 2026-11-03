@@ -316,6 +316,9 @@ body::before {
 /* no finale on phones, short screens or with reduced motion: Contact is a normal section there */
 @media (max-width: 767px), (max-height: 640px), (prefers-reduced-motion: reduce) { .finale-wrap { height: auto; } .finale-stage { position: relative !important; height: auto !important; min-height: 100vh; } .finale-hint { display: none; } }
 .sink-wrap { transform-origin: 50% 46%; transform: rotate(calc(var(--sink) * 300deg)) scale(calc(1 - var(--sink) * 0.985)); opacity: calc(1 - var(--sink) * 1.15); will-change: transform, opacity; }
+.finale-track { display: none; }
+@media (max-width: 767px), (max-height: 640px) { .finale-track { display: block; height: 280vh; } }
+@media (prefers-reduced-motion: reduce) { .finale-track { display: none !important; } }
 .finale-hint { position: absolute; left: 0; right: 0; bottom: 1.6rem; text-align: center; font: 500 10px/1 'JetBrains Mono', monospace; letter-spacing: .4em; text-transform: uppercase; color: rgba(255,255,255,.4); opacity: var(--hint); pointer-events: none; }
 .finale-hint span { display: inline-block; animation: hint-bob 1.6s ease-in-out infinite; color: #00f0ff; }
 @keyframes hint-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
@@ -335,6 +338,9 @@ html, body { overflow-x: clip; }
   .ptag { display: none; }                                   /* the 'now approaching' note would sit on top of the cards */
   .io-bubble-wrap { max-width: calc(100vw - 24px) !important; }
   .io-mini, .io-mini-wide { font-size: .8rem; padding: 9px 12px; }
+  #finale-ui .fin-card { transform: translateY(calc(-8vh + (1 - var(--reveal)) * 18px)); }   /* finale: words above, IO's bubble (with the heart) below */
+  .io-hearts { grid-template-columns: repeat(7, 1.15rem); grid-auto-rows: 1.15rem; margin-top: .5rem; }
+  .io-hearts i { font-size: .9rem; line-height: 1.15rem; }
   .sndbtn { top: 1.5rem; bottom: auto; left: 50%; margin-left: -1.1rem; width: 2.2rem; height: 2.2rem; }   /* in the empty middle of the top bar */
 }
 

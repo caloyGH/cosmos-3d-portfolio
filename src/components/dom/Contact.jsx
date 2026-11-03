@@ -10,7 +10,8 @@ const SOCIALS = [
 /** Contact: the glass card (IO talks next to it, see IoBubble) and the footer. */
 export default function Contact() {
   return (
-    // tall on purpose: the stage inside is pinned while you keep scrolling, and that extra scroll drives the black hole finale
+    <>
+    {/* tall on purpose: the stage inside is pinned while you keep scrolling, and that extra scroll drives the black hole finale */}
     <section id="contact" className="finale-wrap relative">
       <div className="finale-stage sticky top-0 flex h-screen flex-col justify-center px-6 py-24 md:px-16">
         <div className="sink-wrap">
@@ -37,5 +38,8 @@ export default function Contact() {
         </p>
       </div>
     </section>
+    {/* short or narrow screens: Contact cannot be pinned (it does not fit), so the finale gets its own scroll track after it */}
+    <div id="finale-track" className="finale-track" aria-hidden="true" />
+    </>
   )
 }

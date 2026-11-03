@@ -2,10 +2,11 @@ import { useMemo, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import { AdditiveBlending, BufferAttribute, BufferGeometry, Vector2, Vector3 } from 'three'
 import { scrollState } from '../../store/scroll'
+import { PHONE } from '../../store/device'
 import { buildStars } from './shapes'
 
 const HOLE = new Vector3()
-const COUNT = 1500
+const COUNT = PHONE ? 900 : 1500
 const DEPTH = 70
 
 const vertex = /* glsl */ `

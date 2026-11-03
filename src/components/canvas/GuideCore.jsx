@@ -38,8 +38,9 @@ export default function GuideCore() {
       const sst = (a, b, v) => { const t = Math.min(Math.max((v - a) / (b - a), 0), 1); return t * t * (3 - 2 * t) }
       const gone = sst(0.14, 0.5, f) * (1 - sst(0.86, 0.97, f))
       const back = sst(0.86, 0.97, f)
-      io.x = io.x * (1 - gone - back) + 0.55 * back
-      io.y = io.y * (1 - gone - back) + 0.02 * back
+      const small = size.width < 768
+      io.x = io.x * (1 - gone - back) + (small ? 0.0 : 0.55) * back
+      io.y = io.y * (1 - gone - back) + (small ? 0.5 : 0.02) * back
       io.s = io.s * (1 - 0.97 * gone - 0.15 * back)
     }
   })

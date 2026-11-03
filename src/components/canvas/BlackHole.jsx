@@ -2,9 +2,11 @@ import { useMemo, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import { AdditiveBlending, BufferAttribute, BufferGeometry, DoubleSide, MathUtils } from 'three'
 import { scrollState } from '../../store/scroll'
+import { PHONE } from '../../store/device'
 import { holeVertex, diskFragment, lensFragment, infallVertex, infallFragment } from './blackHoleShaders'
 
 const R = 1.25      // event horizon radius (world units, at the hole's depth)
+const SEG = PHONE ? 64 : 96 // ring smoothness (lighter on phones)
 const TILT = 1.2    // how far the disk leans toward us
 const sst = (a, b, v) => { const t = MathUtils.clamp((v - a) / (b - a), 0, 1); return t * t * (3 - 2 * t) }
 
@@ -24,7 +26,7 @@ export default function BlackHole() {
   const { U, geo } = useMemo(() => {
     let s = 5
     const rnd = () => ((s = (s * 16807) % 2147483647) / 2147483647)
-    const N = 800
+    const N = PHONE ? 350 : 600
     const seed = new Float32Array(N * 3)
     for (let i = 0; i < N; i++) {
       seed[i * 3] = rnd() * Math.PI * 2
@@ -75,7 +77,7 @@ export default function BlackHole() {
       {/* far half of the disk, then the black horizon, then the near half in front of it */}
       <group rotation-x={TILT}>
         <mesh renderOrder={20} frustumCulled={false}>
-          <ringGeometry args={[R * 1.1, R * 3.7, 128, 1]} />
+          <ringGeometry args={[R * 1.1, R * 3.7, SEG, 1]} />
           <shaderMaterial ref={mBack} vertexShader={holeVertex} fragmentShader={diskFragment} uniforms={U.diskBack} transparent depthTest={false} depthWrite={false} blending={AdditiveBlending} side={DoubleSide} />
         </mesh>
       </group>
@@ -87,12 +89,12 @@ export default function BlackHole() {
         <meshBasicMaterial color="#000000" transparent opacity={1} depthTest={false} depthWrite={false} />
       </mesh>
       <mesh renderOrder={23} frustumCulled={false}>
-        <ringGeometry args={[R * 0.98, R * 2.1, 128, 1]} />
+        <ringGeometry args={[R * 0.98, R * 2.1, SEG, 1]} />
         <shaderMaterial ref={mLens} vertexShader={holeVertex} fragmentShader={lensFragment} uniforms={U.lens} transparent depthTest={false} depthWrite={false} blending={AdditiveBlending} side={DoubleSide} />
       </mesh>
       <group rotation-x={TILT}>
         <mesh renderOrder={24} frustumCulled={false}>
-          <ringGeometry args={[R * 1.1, R * 3.7, 128, 1]} />
+          <ringGeometry args={[R * 1.1, R * 3.7, SEG, 1]} />
           <shaderMaterial ref={mDisk} vertexShader={holeVertex} fragmentShader={diskFragment} uniforms={U.disk} transparent depthTest={false} depthWrite={false} blending={AdditiveBlending} side={DoubleSide} />
         </mesh>
       </group>

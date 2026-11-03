@@ -14,7 +14,8 @@ export default function useScrollSections() {
     let centers = []
     const clamp01 = (v) => Math.min(Math.max(v, 0), 1)
     const sst = (a, b, v) => { const t = clamp01((v - a) / (b - a)); return t * t * (3 - 2 * t) }
-    const noFinale = window.matchMedia?.('(max-width: 767px), (max-height: 640px), (prefers-reduced-motion: reduce)')
+    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)') // no finale at all
+    const compact = window.matchMedia?.('(max-width: 767px), (max-height: 640px)') // finale runs on its own track after Contact
 
     const measure = () => {
       centers = SECTIONS.map((id) => {
@@ -44,16 +45,21 @@ export default function useScrollSections() {
       // the finale: scrolling on past Contact (which stays pinned) pulls the whole scene into a black hole
       const c = document.getElementById('contact')
       let fin = 0
-      if (c && !noFinale?.matches) {
-        const range = c.offsetHeight - window.innerHeight
-        fin = range > 40 ? clamp01((window.scrollY - c.offsetTop) / range) : 0
+      const track = document.getElementById('finale-track')
+      const pinned = !compact?.matches
+      if (!reduced?.matches) {
+        const el = pinned ? c : track
+        if (el) {
+          const range = el.offsetHeight - window.innerHeight
+          fin = range > 40 ? clamp01((window.scrollY - el.offsetTop) / range) : 0
+        }
       }
       if (fin !== scrollState.fin) {
         scrollState.fin = fin
         document.body.dataset.finale = fin > 0.1 ? '1' : '0'
         document.body.dataset.finEnd = fin > 0.9 ? '1' : '0'
         document.body.style.setProperty('--fin', fin.toFixed(3)) // lets the CSS tidy the HUD away as everything is swallowed
-        if (c) {
+        if (c && pinned) {
           const sink = Math.pow(sst(0.1, 0.55, fin), 2.2) // contact card: slow at first, then falls in
           c.style.setProperty('--sink', sink.toFixed(4))
           c.style.setProperty('--hint', (1 - sst(0.0, 0.1, fin)).toFixed(3))
