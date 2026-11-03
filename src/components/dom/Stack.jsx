@@ -1,9 +1,12 @@
-import { Section, Reveal, SectionLabel, Panel, Bar, Heading } from './ui'
+import { Section, Reveal, SectionLabel, Panel, Heading } from './ui'
+import NanoSwarm from './NanoSwarm'
 import { SKILLS } from '../../data/profile'
 
 export default function Stack() {
   return (
     <Section id="stack">
+      {/* tiny nanobots drifting through the section; squads swarm to a card and frame it */}
+      <NanoSwarm />
       <div data-parallax="0.6" className="w-full">
         <Reveal>
           <SectionLabel index="03">Tech Stack</SectionLabel>
@@ -17,14 +20,12 @@ export default function Stack() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {SKILLS.map((s, i) => (
             <Reveal key={s.name} delay={(i % 4) * 80}>
-              <Panel className="p-5">
-                <div className="mb-5 flex items-baseline justify-between">
+              <div data-bot={s.name}>
+                <Panel className="p-5">
                   <h3 className="font-display text-lg font-semibold text-white">{s.name}</h3>
-                  <span className="font-mono text-xs text-neon">{s.level}%</span>
-                </div>
-                <Bar level={s.level} />
-                <p className="mt-3 font-mono text-[10px] uppercase tracking-widest text-white/40">{s.cat}</p>
-              </Panel>
+                  <p className="mt-3 font-mono text-[10px] uppercase tracking-widest text-white/40">{s.cat}</p>
+                </Panel>
+              </div>
             </Reveal>
           ))}
         </div>
