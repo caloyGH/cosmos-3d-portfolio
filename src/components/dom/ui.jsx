@@ -4,7 +4,7 @@ import gsap from 'gsap'
 /** Full-height section wrapper (left-aligned content; the 3D model lives on the right). */
 export function Section({ id, className = '', children }) {
   return (
-    <section id={id} className={`relative flex min-h-screen items-center px-6 py-28 md:px-16 ${className}`}>
+    <section id={id} className={`relative flex min-h-svh items-center px-6 py-28 md:px-16 ${className}`}>
       {children}
     </section>
   )

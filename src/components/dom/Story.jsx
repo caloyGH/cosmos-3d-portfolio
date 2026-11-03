@@ -48,14 +48,14 @@ export default function Story() {
 
   return (
     <section id="story" aria-label="My story" className="relative h-[320vh]">
-      <div className="sticky top-0 h-screen overflow-hidden">
+      <div className="sticky top-0 h-svh overflow-hidden">
         {STORY.map((s, i) => (
           <div
             key={i}
             ref={(el) => (refs.current[i] = el)}
             style={{ opacity: 0 }}
-            className={`absolute top-1/2 w-full max-w-[min(26rem,86vw)] -translate-y-1/2 px-6 will-change-transform md:px-16 ${
-              s.side === 'right' ? 'right-0 text-right md:max-w-md' : 'left-0 md:max-w-md'
+            className={`absolute top-1/2 w-full max-w-[min(26rem,86vw)] max-md:max-w-[78vw] -translate-y-1/2 px-6 will-change-transform max-md:top-[62%] md:px-16 ${
+              s.side === 'right' ? 'right-0 text-right md:max-w-md max-md:left-0 max-md:right-auto max-md:text-left' : 'left-0 md:max-w-md'
             }`}
           >
             <div className={`mb-5 flex items-center gap-3 ${s.side === 'right' ? 'justify-end' : ''}`}>

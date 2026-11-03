@@ -20,7 +20,7 @@ export default function Contact() {
             <span>
               © {new Date().getFullYear()} {PROFILE.brand} — {PROFILE.location}
             </span>
-            <div className="flex gap-6">
+            <div className="flex flex-wrap gap-x-6 gap-y-2">
               {SOCIALS.map((s) => (
                 <a key={s.label} href={s.href} target="_blank" rel="noreferrer" download={s.download ? '' : undefined} className="transition hover:text-neon">
                   {s.label}

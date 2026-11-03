@@ -27,6 +27,11 @@ export default function IoBubble() {
       const el = box.current
       if (el) {
         const W = window.innerWidth, H = window.innerHeight
+        if (W < 768 || H < 500) { // phones (also turned sideways): a strip above the timeline
+          el.style.transform = `translate3d(12px, ${(H - 92 - el.offsetHeight).toFixed(1)}px, 0)`
+          raf = requestAnimationFrame(loop)
+          return
+        }
         const io = scrollState.ioPos || scrollState.io
         const x = ((1 + io.x) / 2) * W
         const y = ((1 - io.y) / 2) * H
@@ -81,8 +86,8 @@ export default function IoBubble() {
         }
         scrollState.ioTalk = 0
       }
-      if (stay) return // stays until you leave the section
-      await sleep(4200)
+      if (stay && window.innerWidth >= 768 && window.innerHeight >= 500) return // stays until you leave the section (on phones it leaves by itself, it would cover the page)
+      await sleep(stay ? 6500 : 4200)
       if (run.current === id) setOpen(false)
     }
     const loop = (now) => {
@@ -131,7 +136,7 @@ export default function IoBubble() {
   }, [])
 
   return (
-    <div ref={box} aria-live="polite" className="pointer-events-none fixed left-0 top-0 z-[35]" style={{ maxWidth: wide ? 'min(18rem, 70vw)' : 'min(15rem, 60vw)', width: 'max-content' }}>
+    <div ref={box} aria-live="polite" className="io-bubble-wrap pointer-events-none fixed left-0 top-0 z-[35]" style={{ maxWidth: wide ? 'min(18rem, 70vw)' : 'min(15rem, 60vw)', width: 'max-content' }}>
       <div className={`io-mini ${open ? 'io-mini-open' : ''} ${wide ? 'io-mini-wide' : ''}`}>
         <span className="io-mini-name">{IO.name}</span>
         {text}

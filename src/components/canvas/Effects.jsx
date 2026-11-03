@@ -5,7 +5,7 @@ import { MathUtils, Vector2 } from 'three'
 import { scrollState } from '../../store/scroll'
 
 /** hq: smooth (4x MSAA) edges. Experience turns it off automatically if the GPU struggles. */
-export default function Effects({ hq = true }) {
+export default function Effects({ hq = true, lite = false }) {
   const offset = useMemo(() => new Vector2(0.0005, 0.0005), [])
   const last = useRef(scrollState.pos)
   const vel = useRef(0)
@@ -18,6 +18,16 @@ export default function Effects({ hq = true }) {
     const k = 0.0005 + Math.min(vel.current * 0.006, 0.013)
     offset.set(k, k)
   })
+
+  if (lite) {
+    // phones: just the glow and the vignette (no chromatic aberration pass)
+    return (
+      <EffectComposer multisampling={0}>
+        <Bloom intensity={0.8} luminanceThreshold={0.6} luminanceSmoothing={0.3} mipmapBlur />
+        <Vignette offset={0.25} darkness={0.8} />
+      </EffectComposer>
+    )
+  }
 
   return (
     <EffectComposer multisampling={hq ? 4 : 0}>

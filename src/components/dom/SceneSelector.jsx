@@ -19,8 +19,12 @@ export default function SceneSelector({ scenes, section }) {
   }, [last])
 
   return (
-    <div className="fin-fade pointer-events-none fixed inset-x-0 bottom-0 z-30 px-6 pb-5 md:px-16">
+    <div className="fin-fade pointer-events-none fixed inset-x-0 bottom-0 z-30 px-6 pb-4 md:px-16 md:pb-5">
       <div className="pointer-events-auto relative mx-auto h-14 max-w-4xl">
+        {/* phones: no room for five labels, so only the current one is shown, centred under the track */}
+        <p className="absolute inset-x-0 top-5 text-center font-mono text-[10px] uppercase tracking-widest text-white md:hidden">
+          <span className="text-neon">0{section + 1}</span> {scenes[section]?.name}
+        </p>
         {/* track */}
         <div className="absolute inset-x-0 top-1 h-px bg-white/15">
           <div ref={fill} className="h-full bg-neon shadow-[0_0_8px_#00f0ff]" style={{ width: '0%' }} />
@@ -35,7 +39,7 @@ export default function SceneSelector({ scenes, section }) {
               onClick={() => scrollToSection(s.section)}
               // the point at `left`% of the button sits exactly at `left`% of the track
               style={{ left: `${left}%`, transform: `translateX(-${left}%)` }}
-              className="group absolute top-0 text-left"
+              className="group absolute top-0 text-left max-md:h-9 max-md:w-11"
             >
               <span
                 style={{ left: `${left}%` }}
@@ -46,7 +50,7 @@ export default function SceneSelector({ scenes, section }) {
                 }`}
               />
               <span
-                className={`block pt-4 font-mono text-[10px] uppercase tracking-widest transition ${
+                className={`block pt-4 font-mono text-[10px] uppercase tracking-widest transition max-md:hidden ${
                   active ? 'text-white' : 'text-white/40 group-hover:text-white/80'
                 }`}
               >

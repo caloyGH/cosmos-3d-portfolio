@@ -1,6 +1,7 @@
 import { Suspense, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { PerformanceMonitor } from '@react-three/drei'
+import { PHONE } from '../../store/device'
 import GlBoundary from './GlBoundary'
 import TravelFx from './TravelFx'
 import Nebula from './Nebula'
@@ -18,12 +19,12 @@ import Effects from './Effects'
 const BG = '#0a0a0a'
 
 export default function Experience() {
-  const [hq, setHq] = useState(true) // sharp (up to 2x pixels, smooth edges); drops to 1x automatically if the GPU struggles
+  const [hq, setHq] = useState(!PHONE) // sharp (up to 2x pixels, smooth edges); drops to 1x automatically if the GPU struggles. Off from the start on phones
   return (
     <GlBoundary>
     <Canvas
       camera={{ position: [0, 0, 7.5], fov: 45 }}
-      dpr={[1, hq ? 2 : 1]}
+      dpr={[1, PHONE ? 1.5 : hq ? 2 : 1]}
       onCreated={({ gl }) => {
         gl.domElement.addEventListener('webglcontextlost', (ev) => ev.preventDefault())
         // remember shader compile errors so ?debug can show them on screen (see DebugBadge)
@@ -52,7 +53,7 @@ export default function Experience() {
         {/* <Nodes /> off for the smoothness test */}
         {/* <ParticleField /> off for the smoothness test */}
         <BlackHole />
-        <Effects hq={hq} />
+        <Effects hq={hq} lite={PHONE} />
       </Suspense>
     </Canvas>
     </GlBoundary>

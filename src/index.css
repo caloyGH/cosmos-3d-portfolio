@@ -329,6 +329,15 @@ body::before {
 #finale-ui[data-on='1'] .fin-btn { pointer-events: auto; }
 #finale-ui .fin-btn:hover { border-color: #00f0ff; color: #00f0ff; }
 
+/* ---- phones ---- */
+html, body { overflow-x: clip; }
+@media (max-width: 767px) {
+  .ptag { display: none; }                                   /* the 'now approaching' note would sit on top of the cards */
+  .io-bubble-wrap { max-width: calc(100vw - 24px) !important; }
+  .io-mini, .io-mini-wide { font-size: .8rem; padding: 9px 12px; }
+  .sndbtn { top: 1.5rem; bottom: auto; left: 50%; margin-left: -1.1rem; width: 2.2rem; height: 2.2rem; }   /* in the empty middle of the top bar */
+}
+
 /* while the finale runs, the guide's speech bubble and the planet tag step aside */
 .io-mini, .ptag { transition: opacity .4s ease; }
 body[data-finale='1'] .ptag, body[data-finale='1']:not([data-fin-end='1']) .io-mini { opacity: 0 !important; pointer-events: none; }

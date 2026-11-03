@@ -9,7 +9,7 @@ export default function DebugBadge() {
     if (!on) return
     const id = setInterval(() => {
       const errs = window.__cosmosErrors || []
-      setTxt(`v70 | pos ${scrollState.pos.toFixed(2)} | fin ${scrollState.fin.toFixed(2)} | ${window.innerWidth}x${window.innerHeight} | shader errors: ${errs.length}${errs.length ? '\n' + errs.slice(0, 2).join('\n') : ''}`)
+      setTxt(`v71 | pos ${scrollState.pos.toFixed(2)} | fin ${scrollState.fin.toFixed(2)} | ${window.innerWidth}x${window.innerHeight} | shader errors: ${errs.length}${errs.length ? '\n' + errs.slice(0, 2).join('\n') : ''}`)
     }, 250)
     return () => clearInterval(id)
   }, [on])

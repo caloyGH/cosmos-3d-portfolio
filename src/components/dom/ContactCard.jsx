@@ -52,13 +52,13 @@ export default function ContactCard() {
   return (
     <Reveal>
       <div className="cta-wrap">
-        <div ref={card} className="cta relative overflow-hidden p-8 md:p-12">
+        <div ref={card} className="cta relative overflow-hidden p-5 sm:p-8 md:p-12">
           {/* decorative orbit rings */}
           <span className="cta-orbit cta-orbit-a" />
           <span className="cta-orbit cta-orbit-b" />
 
-          <div className="relative grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:items-end">
-            <div>
+          <div className="relative grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[1.15fr_1fr] lg:items-end lg:gap-10">
+            <div className="min-w-0">
               <p className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.3em] text-neon">
                 <span className="relative flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon opacity-75" />
@@ -68,7 +68,7 @@ export default function ContactCard() {
               </p>
 
               <Heading
-                className="mt-5 font-display text-4xl font-semibold leading-[1.02] tracking-tight text-white md:text-6xl"
+                className="mt-5 font-display text-[2rem] font-semibold leading-[1.05] tracking-tight text-white sm:text-4xl md:text-6xl"
                 parts={[{ t: "Let's build something" }, { t: 'impossible.', accent: true }]}
               />
 
@@ -81,12 +81,12 @@ export default function ContactCard() {
                   data-magnetic
                   type="button"
                   onClick={copy}
-                  className="group inline-flex items-center gap-3 rounded-full border border-neon/40 bg-neon/10 px-6 py-3 font-mono text-sm text-white transition hover:bg-neon/20 hover:shadow-[0_0_30px_rgba(0,240,255,0.35)]"
+                  className="group inline-flex max-w-full items-center gap-2 rounded-full border border-neon/40 bg-neon/10 px-4 py-3 font-mono text-[13px] text-white transition sm:gap-3 sm:px-6 sm:text-sm hover:bg-neon/20 hover:shadow-[0_0_30px_rgba(0,240,255,0.35)]"
                 >
                   <span className="text-neon"><Icon d={ICONS.mail} /></span>
                   {PROFILE.email}
                   <span className="ml-1 flex items-center gap-1 text-[10px] uppercase tracking-widest text-neon">
-                    {copied ? '✓ Copied' : <><Icon d={ICONS.copy} /> Copy</>}
+                    {copied ? '✓ Copied' : <><Icon d={ICONS.copy} /> <span className="max-sm:hidden">Copy</span></>}
                   </span>
                 </button>
                 {socials.map((s) => (
@@ -107,7 +107,7 @@ export default function ContactCard() {
             </div>
 
             {/* quick message: opens your mail app with the text filled in (no backend needed) */}
-            <div className="cta-box p-5">
+            <div className="cta-box min-w-0 p-5">
               <label htmlFor="quick-msg" className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/40">
                 Quick message
               </label>

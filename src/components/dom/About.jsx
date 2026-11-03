@@ -6,7 +6,7 @@ import me from '../../assets/me.jpg'
 export default function About() {
   const edu = ABOUT.education
   return (
-    <section id="about" className="relative flex min-h-screen flex-col justify-center px-6 py-28 md:px-16">
+    <section id="about" className="relative flex min-h-svh flex-col justify-center px-6 py-28 md:px-16">
       <div className="flex w-full flex-col gap-14 lg:flex-row lg:items-start lg:justify-between">
         <div data-parallax="1" className="max-w-xl">
           <Reveal>

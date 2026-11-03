@@ -37,9 +37,9 @@ export function guideTarget(pos, desktop, out = { x: 0, y: 0, s: 1 }) {
   out.y = a[2] + (b[2] - a[2]) * t
   out.s = a[3] + (b[3] - a[3]) * t
   if (!desktop) { // phones: one column of text, so the guide hugs the right edge and stays small
-    out.x = p < 0.06 ? 0.0 : 0.86
+    out.x = p < 0.06 ? 0.0 : 0.93 // peeks in from the edge so it covers as little text as possible
     out.y = p < 0.06 ? 0.38 : out.y * 0.9
-    out.s *= 0.62
+    out.s *= p < 0.06 ? 0.62 : 0.5
   }
   return out
 }
