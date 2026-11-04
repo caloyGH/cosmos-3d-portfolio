@@ -1,9 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { Reveal, Heading } from './ui'
 import { PROFILE } from '../../data/profile'
-import { attachTilt } from '../../hooks/tilt'
-
-const TICKER = ['Open to opportunities', 'Java → Frontend', 'React', 'Three.js', 'Tailwind', 'Caloocan, PH']
 
 const Icon = ({ d }) => (
   <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -19,13 +16,10 @@ const ICONS = {
   download: 'M12 4v11M7 11l5 5 5-5M5 20h14',
 }
 
-/** Contact: a glass card with a rotating gradient edge, cursor spotlight, copy-email and a quick "write to me" box. */
+/** Contact: open layout (no card), copy-email, socials and a quick "write to me" box. */
 export default function ContactCard() {
-  const card = useRef(null)
   const [copied, setCopied] = useState(false)
   const [msg, setMsg] = useState('')
-
-  useEffect(() => attachTilt(card.current, { max: 3 }), [])
 
   const copy = async () => {
     try {
@@ -51,96 +45,56 @@ export default function ContactCard() {
 
   return (
     <Reveal>
-      <div className="cta-wrap">
-        <div ref={card} className="cta relative overflow-hidden p-5 sm:p-8 md:p-12">
-          {/* decorative orbit rings */}
-          <span className="cta-orbit cta-orbit-a" />
-          <span className="cta-orbit cta-orbit-b" />
+      {/* open layout, no card: the text sits on the left and the planet (Neptune, on the right) stays visible */}
+      <div className="cta-open max-w-[34rem]">
+        <p className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.3em] text-neon">
+          <span className="h-2 w-2 rounded-full bg-neon" />
+          Contact · {PROFILE.status}
+        </p>
 
-          <div className="relative grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[1.15fr_1fr] lg:items-end lg:gap-10">
-            <div className="min-w-0">
-              <p className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.3em] text-neon">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-neon" />
-                </span>
-                Contact · {PROFILE.status}
-              </p>
+        <Heading
+          className="mt-4 font-display text-[2rem] font-semibold leading-[1.05] tracking-tight text-white sm:text-4xl md:text-6xl"
+          parts={[{ t: "Let's build something" }, { t: 'impossible.', accent: true }]}
+        />
 
-              <Heading
-                className="mt-5 font-display text-[2rem] font-semibold leading-[1.05] tracking-tight text-white sm:text-4xl md:text-6xl"
-                parts={[{ t: "Let's build something" }, { t: 'impossible.', accent: true }]}
-              />
+        <p className="mt-4 max-w-sm text-white/60 md:text-lg">Have a project, an opportunity, or just want to say hi? My inbox is open.</p>
 
-              <p className="mt-5 max-w-md text-white/60 md:text-lg">
-                Have a project, an opportunity, or just want to say hi? My inbox is open.
-              </p>
+        <button
+          data-magnetic
+          type="button"
+          onClick={copy}
+          className="mt-6 inline-flex max-w-full items-center gap-2 rounded-full border border-neon/40 bg-neon/10 px-4 py-3 font-mono text-[13px] text-white transition sm:gap-3 sm:px-6 sm:text-sm hover:bg-neon/20"
+        >
+          <span className="text-neon"><Icon d={ICONS.mail} /></span>
+          {PROFILE.email}
+          <span className="ml-1 flex items-center gap-1 text-[10px] uppercase tracking-widest text-neon">
+            {copied ? '✓ Copied' : <><Icon d={ICONS.copy} /> <span className="max-sm:hidden">Copy</span></>}
+          </span>
+        </button>
 
-              <div className="mt-8 flex flex-wrap gap-3">
-                <button
-                  data-magnetic
-                  type="button"
-                  onClick={copy}
-                  className="group inline-flex max-w-full items-center gap-2 rounded-full border border-neon/40 bg-neon/10 px-4 py-3 font-mono text-[13px] text-white transition sm:gap-3 sm:px-6 sm:text-sm hover:bg-neon/20 hover:shadow-[0_0_30px_rgba(0,240,255,0.35)]"
-                >
-                  <span className="text-neon"><Icon d={ICONS.mail} /></span>
-                  {PROFILE.email}
-                  <span className="ml-1 flex items-center gap-1 text-[10px] uppercase tracking-widest text-neon">
-                    {copied ? '✓ Copied' : <><Icon d={ICONS.copy} /> <span className="max-sm:hidden">Copy</span></>}
-                  </span>
-                </button>
-                {socials.map((s) => (
-                  <a
-                    key={s.label}
-                    href={s.href}
-                    download={s.download ? '' : undefined}
-                    data-magnetic
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm text-white transition hover:border-neon/50 hover:text-neon"
-                  >
-                    <Icon d={ICONS[s.icon]} />
-                    {s.label}
-                  </a>
-                ))}
-              </div>
-            </div>
+        <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-widest text-white/55">
+          {socials.map((s) => (
+            <a key={s.label} href={s.href} download={s.download ? '' : undefined} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 py-1 transition hover:text-neon">
+              <Icon d={ICONS[s.icon]} />
+              {s.label}
+            </a>
+          ))}
+        </div>
 
-            {/* quick message: opens your mail app with the text filled in (no backend needed) */}
-            <div className="cta-box min-w-0 p-5">
-              <label htmlFor="quick-msg" className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/40">
-                Quick message
-              </label>
-              <textarea
-                id="quick-msg"
-                value={msg}
-                onChange={(e) => setMsg(e.target.value)}
-                rows={4}
-                placeholder="Hi! I'd like to talk about…"
-                className="mt-3 w-full resize-none border-0 bg-transparent text-sm leading-relaxed text-white outline-none placeholder:text-white/30"
-              />
-              <a
-                href={mailto}
-                data-magnetic
-                className="mt-3 inline-flex w-full items-center justify-between rounded-full bg-neon px-6 py-3 text-sm font-semibold text-black transition hover:shadow-[0_0_30px_rgba(0,240,255,0.6)]"
-              >
-                Send via email
-                <Icon d={ICONS.arrow} />
-              </a>
-            </div>
-          </div>
-
-          {/* ticker */}
-          <div className="cta-ticker relative mt-12 overflow-hidden border-t border-white/10 pt-5" aria-hidden="true">
-            <div className="cta-track flex w-max gap-10 font-mono text-[11px] uppercase tracking-[0.3em] text-white/35">
-              {[...TICKER, ...TICKER, ...TICKER, ...TICKER].map((t, i) => (
-                <span key={i} className="flex items-center gap-10 whitespace-nowrap">
-                  {t}
-                  <span className="text-neon/60">✦</span>
-                </span>
-              ))}
-            </div>
-          </div>
+        {/* quick message: opens your mail app with the text filled in (no backend needed) */}
+        <div className="cta-box mt-5 flex items-end gap-3 p-3 pl-4">
+          <textarea
+            id="quick-msg"
+            aria-label="Quick message"
+            value={msg}
+            onChange={(e) => setMsg(e.target.value)}
+            rows={2}
+            placeholder="Quick message: Hi! I'd like to talk about…"
+            className="min-w-0 flex-1 resize-none border-0 bg-transparent text-sm leading-relaxed text-white outline-none placeholder:text-white/30"
+          />
+          <a href={mailto} data-magnetic aria-label="Send via email" className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-neon text-black transition hover:shadow-[0_0_24px_rgba(0,240,255,0.6)]">
+            <Icon d={ICONS.arrow} />
+          </a>
         </div>
       </div>
     </Reveal>

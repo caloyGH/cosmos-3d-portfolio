@@ -19,15 +19,8 @@ export default function Effects({ hq = true, lite = false }) {
     offset.set(k, k)
   })
 
-  if (lite) {
-    // phones: just the glow and the vignette (no chromatic aberration pass)
-    return (
-      <EffectComposer multisampling={0}>
-        <Bloom intensity={0.8} luminanceThreshold={0.6} luminanceSmoothing={0.3} mipmapBlur />
-        <Vignette offset={0.25} darkness={0.8} />
-      </EffectComposer>
-    )
-  }
+  // phones: no post-processing at all (the bloom's mip chain costs a lot of fill rate); a CSS vignette stands in for it
+  if (lite) return null
 
   return (
     <EffectComposer multisampling={hq ? 4 : 0}>

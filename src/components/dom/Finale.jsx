@@ -1,3 +1,4 @@
+import { PROFILE } from '../../data/profile'
 import { scrollToSection } from '../../hooks/useScrollSections'
 
 /** The last words, shown over the black hole once the scene has been swallowed (opacity is driven by --reveal, see useScrollSections). */
@@ -11,6 +12,9 @@ export default function Finale() {
           Back to start <span aria-hidden="true">↑</span>
         </button>
       </div>
+      <p className="fin-copy">
+        © {new Date().getFullYear()} {PROFILE.brand} — {PROFILE.location}
+      </p>
     </div>
   )
 }

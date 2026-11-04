@@ -1,3 +1,4 @@
+import { PHONE } from '../../store/device'
 // GLSL for the background planet (kept in its own file so it can be tested without React).
 const NOISE = /* glsl */ `
   float h3(vec3 p) {
@@ -72,7 +73,7 @@ export const planetVertex = /* glsl */ `
   }
 `
 
-export const planetFragment = /* glsl */ `
+export const planetFragment = (PHONE ? '#define LITE\n' : '') + /* glsl */ `
   precision highp float;
   varying vec3 vObj;
   varying vec3 vN;
@@ -113,16 +114,24 @@ export const planetFragment = /* glsl */ `
     if (uGas < 0.999) {
       float h = fbm(q * 2.6);
       float h2 = fbm3(q * 12.0 + 3.0);
-      float h3 = fbm3(q * 34.0 + 7.0);                 // fine detail: rough coasts, craters, grain
+#ifdef LITE
+      float h3 = 0.5;
+#else
+      float h3 = fbm3(q * 34.0 + 7.0);
+#endif                 // fine detail: rough coasts, craters, grain
       // relief: tilt the surface normal by the slope of a height field (3 samples), so mountains and craters catch the light and cast
       // shade near the terminator. Sampled in the mesh's own space, so the shading stays put while the ground turns beneath it.
       vec3 ax = abs(q.y) < 0.95 ? vec3(0.0, 1.0, 0.0) : vec3(1.0, 0.0, 0.0);
       vec3 t1 = normalize(cross(q, ax));
       vec3 t2 = cross(q, t1);
       float e = 0.014;
+#ifdef LITE
+      float r0 = 0.0, r1 = 0.0, r2 = 0.0;
+#else
       float r0 = fbm3(q * 7.0 + 13.0) + 0.5 * h2;
       float r1 = fbm3((q + t1 * e) * 7.0 + 13.0) + 0.5 * fbm3((q + t1 * e) * 12.0 + 3.0);
       float r2 = fbm3((q + t2 * e) * 7.0 + 13.0) + 0.5 * fbm3((q + t2 * e) * 12.0 + 3.0);
+#endif
       float k = 0.075 * (1.0 - uOcean * 0.85);
       rel = -k * ((r1 - r0) / e * 0.06 * t1 + (r2 - r0) / e * 0.06 * t2) * 14.0;
       vec3 rock = mix(uC0, uC1, smoothstep(0.34, 0.62, h));

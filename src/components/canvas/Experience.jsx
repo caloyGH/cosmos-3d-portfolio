@@ -24,7 +24,7 @@ export default function Experience() {
     <GlBoundary>
     <Canvas
       camera={{ position: [0, 0, 7.5], fov: 45 }}
-      dpr={[1, PHONE ? 1.5 : hq ? 2 : 1]}
+      dpr={[1, PHONE ? 1.25 : hq ? 2 : 1]}
       onCreated={({ gl }) => {
         gl.domElement.addEventListener('webglcontextlost', (ev) => ev.preventDefault())
         // remember shader compile errors so ?debug can show them on screen (see DebugBadge)
